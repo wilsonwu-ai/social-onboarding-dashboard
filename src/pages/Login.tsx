@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Mail, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Mail, AlertCircle, Eye, EyeOff, Lock } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -36,10 +36,12 @@ export default function Login() {
       <div className="w-full max-w-md">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-foreground">Staff Dashboard</h1>
+          <img
+            src="/social-onboarding-dashboard/snappy-logo.png"
+            alt="Snappy Logo"
+            className="w-20 h-20 rounded-2xl mx-auto mb-4"
+          />
+          <h1 className="text-2xl font-bold text-foreground">Snappy Dashboard</h1>
           <p className="text-muted-foreground mt-1">Social Media Onboarding</p>
         </div>
 

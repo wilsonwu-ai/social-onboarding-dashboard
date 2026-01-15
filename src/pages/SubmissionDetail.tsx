@@ -95,13 +95,20 @@ export default function SubmissionDetail() {
       <header className="bg-white border-b border-border sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Back to Dashboard</span>
-            </button>
+            <div className="flex items-center gap-4">
+              <img
+                src="/social-onboarding-dashboard/snappy-logo.png"
+                alt="Snappy Logo"
+                className="w-10 h-10 rounded-xl"
+              />
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Back to Dashboard</span>
+              </button>
+            </div>
 
             <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 ${status.color}`}>
               <StatusIcon className="w-4 h-4" />
