@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getSubmissionById } from '../data/mockSubmissions';
+import { getSubmissionById } from '../services/submissions';
+import type { Submission } from '../data/mockSubmissions';
 import {
   ArrowLeft,
   Building2,
@@ -18,6 +20,7 @@ import {
   CheckCircle,
   AlertCircle,
   ExternalLink,
+  Loader2,
 } from 'lucide-react';
 
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -58,14 +61,46 @@ const colorPaletteLabels: Record<string, string> = {
 export default function SubmissionDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const submission = getSubmissionById(id || '');
+  const [submission, setSubmission] = useState<Submission | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!submission) {
+  useEffect(() => {
+    async function fetchSubmission() {
+      if (!id) return;
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getSubmissionById(id);
+        setSubmission(data);
+      } catch (err) {
+        console.error('Error fetching submission:', err);
+        setError('Failed to load submission.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchSubmission();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-muted flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-primary mx-auto mb-3 animate-spin" />
+          <p className="text-muted-foreground">Loading submission...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !submission) {
     return (
       <div className="min-h-screen bg-muted flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-xl font-bold text-foreground mb-2">Submission Not Found</h2>
-          <p className="text-muted-foreground mb-4">The submission you're looking for doesn't exist.</p>
+          <p className="text-muted-foreground mb-4">{error || "The submission you're looking for doesn't exist."}</p>
           <Link to="/dashboard" className="btn-primary inline-flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             Back to Dashboard

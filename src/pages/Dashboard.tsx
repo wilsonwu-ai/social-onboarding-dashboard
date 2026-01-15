@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { mockSubmissions, type Submission } from '../data/mockSubmissions';
+import { getSubmissions } from '../services/submissions';
+import type { Submission } from '../data/mockSubmissions';
 import {
   LogOut,
   Users,
@@ -14,6 +15,7 @@ import {
   Building2,
   Calendar,
   ChevronRight,
+  Loader2,
 } from 'lucide-react';
 
 const statusConfig = {
@@ -27,8 +29,29 @@ export default function Dashboard() {
   const { user, logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredSubmissions = mockSubmissions.filter((submission) => {
+  useEffect(() => {
+    async function fetchSubmissions() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getSubmissions();
+        setSubmissions(data);
+      } catch (err) {
+        console.error('Error fetching submissions:', err);
+        setError('Failed to load submissions. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchSubmissions();
+  }, []);
+
+  const filteredSubmissions = submissions.filter((submission) => {
     const matchesSearch =
       submission.businessName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       submission.businessType.toLowerCase().includes(searchQuery.toLowerCase());
@@ -37,10 +60,10 @@ export default function Dashboard() {
   });
 
   const stats = {
-    total: mockSubmissions.length,
-    new: mockSubmissions.filter((s) => s.status === 'new').length,
-    inReview: mockSubmissions.filter((s) => s.status === 'in_review').length,
-    completed: mockSubmissions.filter((s) => s.status === 'completed' || s.status === 'approved').length,
+    total: submissions.length,
+    new: submissions.filter((s) => s.status === 'new').length,
+    inReview: submissions.filter((s) => s.status === 'in_review').length,
+    completed: submissions.filter((s) => s.status === 'completed' || s.status === 'approved').length,
   };
 
   const formatDate = (dateString: string) => {
@@ -177,7 +200,17 @@ export default function Dashboard() {
             Submissions ({filteredSubmissions.length})
           </h2>
 
-          {filteredSubmissions.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-12">
+              <Loader2 className="w-12 h-12 text-primary mx-auto mb-3 animate-spin" />
+              <p className="text-muted-foreground">Loading submissions...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <AlertCircle className="w-12 h-12 text-danger mx-auto mb-3" />
+              <p className="text-danger">{error}</p>
+            </div>
+          ) : filteredSubmissions.length === 0 ? (
             <div className="text-center py-12">
               <Users className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
               <p className="text-muted-foreground">No submissions found</p>
