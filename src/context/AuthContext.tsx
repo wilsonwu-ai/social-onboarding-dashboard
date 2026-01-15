@@ -15,10 +15,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock credentials for demo
+// Valid credentials
 const VALID_CREDENTIALS = [
-  { email: 'admin@company.com', password: 'admin123', name: 'Admin User', role: 'admin' as const },
-  { email: 'staff@company.com', password: 'staff123', name: 'Staff Member', role: 'staff' as const },
+  { email: 'wilson.wu@gosnappy.io', password: 'snappy2026', name: 'Wilson Wu', role: 'admin' as const },
 ];
 
 export function AuthProvider({ children }: { children: ReactNode }) {

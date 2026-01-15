@@ -112,22 +112,6 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 pt-6 border-t border-border">
-            <p className="text-xs text-muted-foreground text-center mb-3">Demo Credentials</p>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2 bg-muted rounded-lg">
-                <p className="font-medium text-foreground">Admin</p>
-                <p className="text-muted-foreground">admin@company.com</p>
-                <p className="text-muted-foreground">admin123</p>
-              </div>
-              <div className="p-2 bg-muted rounded-lg">
-                <p className="font-medium text-foreground">Staff</p>
-                <p className="text-muted-foreground">staff@company.com</p>
-                <p className="text-muted-foreground">staff123</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
