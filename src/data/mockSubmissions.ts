@@ -1,3 +1,10 @@
+export interface SocialMediaAccount {
+  platform: 'instagram' | 'facebook' | 'tiktok' | 'xhs';
+  link?: string;
+  username?: string;
+  password?: string;
+}
+
 export interface Submission {
   id: string;
   submittedAt: string;
@@ -10,17 +17,17 @@ export interface Submission {
   cuisine?: string;
   website?: string;
   hasExistingSocial: boolean;
-  existingSocialAccounts?: {
-    platform: string;
-    link: string;
-    username: string;
-  }[];
+  existingSocialAccounts?: SocialMediaAccount[];
   preferredUsername?: string;
-  selectedPlatforms?: string[];
+  preferredUsernameAlt?: string;
+  selectedPlatforms?: ('instagram' | 'facebook' | 'tiktok' | 'xhs')[];
+  wantsNewSocial?: boolean;
 
   // Page 2 - What Makes You Special
   keyOfferings: string[];
   uniqueSellingPoints: string[];
+  customOffering?: string;
+  customUSP?: string;
 
   // Page 3 - Create Your Look
   selectedTypography: string;
@@ -34,13 +41,9 @@ export interface Submission {
 
   // Page 4 - Craft Your Message
   targetAudience: string[];
+  customAudience?: string;
   coreMessage: string;
   businessStory: string;
-  currentSocialHandles?: {
-    instagram?: string;
-    facebook?: string;
-    tiktok?: string;
-  };
   accessPreference?: 'credentials' | 'admin_access';
   localCompetitors?: string[];
 }
@@ -67,7 +70,6 @@ export const mockSubmissions: Submission[] = [
     targetAudience: ['Couples & Date Night', 'Food Enthusiasts & Foodies'],
     coreMessage: 'Authentic Italian flavors, crafted with love since 1985',
     businessStory: 'Our family brought the recipes from Tuscany three generations ago. Every dish tells a story of our homeland, prepared with the same love and care as our nonnas kitchen.',
-    currentSocialHandles: { instagram: '@bellaitalia', facebook: 'Bella Italia Trattoria' },
     accessPreference: 'admin_access',
     localCompetitors: ['Olive Garden', 'Maggianos'],
   },
@@ -111,7 +113,6 @@ export const mockSubmissions: Submission[] = [
     targetAudience: ['Health-conscious Diners', 'Young Professionals (25-35)'],
     coreMessage: 'Find your balance, nurture your soul',
     businessStory: 'Green Leaf was born from my own journey to wellness. After years in corporate life, I discovered yoga and meditation. Now I share that peace with our community.',
-    currentSocialHandles: { instagram: '@greenleafwellness' },
     accessPreference: 'credentials',
     localCompetitors: ['CorePower Yoga', 'YogaWorks'],
   },
@@ -154,7 +155,6 @@ export const mockSubmissions: Submission[] = [
     targetAudience: ['Young Professionals (25-35)', 'Students & Young Adults', 'Business Professionals'],
     coreMessage: 'Ethically sourced, expertly crafted',
     businessStory: 'We believe great coffee starts at the source. We work directly with farmers in Colombia, Ethiopia, and Guatemala to bring you the finest single-origin beans, roasted in-house daily.',
-    currentSocialHandles: { instagram: '@coffeecollectiveco' },
     accessPreference: 'admin_access',
     localCompetitors: ['Blue Bottle', 'Stumptown'],
   },

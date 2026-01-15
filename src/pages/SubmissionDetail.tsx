@@ -26,6 +26,12 @@ const TikTokIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const XHSIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className || "w-5 h-5"}>
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6zm-2-8c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+  </svg>
+);
+
 const statusConfig = {
   new: { label: 'New', color: 'bg-blue-100 text-blue-700', icon: AlertCircle },
   in_review: { label: 'In Review', color: 'bg-yellow-100 text-yellow-700', icon: Clock },
@@ -172,6 +178,7 @@ export default function SubmissionDetail() {
                       {account.platform === 'instagram' && <Instagram className="w-5 h-5 text-pink-500" />}
                       {account.platform === 'facebook' && <Facebook className="w-5 h-5 text-blue-600" />}
                       {account.platform === 'tiktok' && <TikTokIcon className="w-5 h-5" />}
+                      {account.platform === 'xhs' && <XHSIcon className="w-5 h-5 text-red-500" />}
                       <div>
                         <p className="font-medium text-sm">{account.username}</p>
                         <a
@@ -190,11 +197,17 @@ export default function SubmissionDetail() {
               {!submission.hasExistingSocial && (
                 <>
                   <InfoRow label="Preferred Username" value={submission.preferredUsername || 'N/A'} />
+                  {submission.preferredUsernameAlt && (
+                    <InfoRow label="Alt Username" value={submission.preferredUsernameAlt} />
+                  )}
                   <InfoRow
                     label="Selected Platforms"
                     value={submission.selectedPlatforms?.join(', ') || 'None'}
                   />
                 </>
+              )}
+              {submission.wantsNewSocial !== undefined && (
+                <InfoRow label="Wants New Accounts" value={submission.wantsNewSocial ? 'Yes' : 'No'} />
               )}
             </Section>
 
@@ -210,6 +223,12 @@ export default function SubmissionDetail() {
                   </span>
                 ))}
               </div>
+              {submission.customOffering && (
+                <div className="mt-3 p-3 bg-muted rounded-lg">
+                  <p className="text-sm text-muted-foreground">Custom offering:</p>
+                  <p className="text-sm font-medium">{submission.customOffering}</p>
+                </div>
+              )}
             </Section>
 
             {/* USPs */}
@@ -224,6 +243,12 @@ export default function SubmissionDetail() {
                   </span>
                 ))}
               </div>
+              {submission.customUSP && (
+                <div className="mt-3 p-3 bg-muted rounded-lg">
+                  <p className="text-sm text-muted-foreground">Custom USP:</p>
+                  <p className="text-sm font-medium">{submission.customUSP}</p>
+                </div>
+              )}
             </Section>
           </div>
 
@@ -292,6 +317,12 @@ export default function SubmissionDetail() {
                   </span>
                 ))}
               </div>
+              {submission.customAudience && (
+                <div className="mt-3 p-3 bg-muted rounded-lg">
+                  <p className="text-sm text-muted-foreground">Custom audience:</p>
+                  <p className="text-sm font-medium">{submission.customAudience}</p>
+                </div>
+              )}
             </Section>
 
             {/* Core Message */}
