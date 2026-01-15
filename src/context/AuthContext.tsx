@@ -30,8 +30,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 500));
 
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedPassword = password.trim();
+
     const validUser = VALID_CREDENTIALS.find(
-      cred => cred.email === email && cred.password === password
+      cred => cred.email.toLowerCase() === trimmedEmail && cred.password === trimmedPassword
     );
 
     if (validUser) {
