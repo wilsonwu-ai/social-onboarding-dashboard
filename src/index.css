@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-poppins;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-poppins font-bold;
+  }
+}
+
+@layer components {
+  .gradient-primary {
+    background: linear-gradient(135deg, #B02990 0%, #D946A8 100%);
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold
+           hover:bg-primary-dark transition-all duration-300 shadow-soft hover:shadow-hover;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-semibold
+           hover:bg-secondary-dark transition-all duration-300;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-soft p-6 border border-border;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 border-2 border-input rounded-xl focus:border-primary
+           focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
