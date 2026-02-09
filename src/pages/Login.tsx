@@ -24,7 +24,8 @@ export default function Login() {
       } else {
         setError('Invalid email or password');
       }
-    } catch {
+    } catch (err) {
+      console.error('Login error:', err);
       setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);

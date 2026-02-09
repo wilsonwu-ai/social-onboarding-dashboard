@@ -22,8 +22,19 @@ const VALID_CREDENTIALS = [
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('dashboard_user');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem('dashboard_user');
+      if (!saved) return null;
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed.email && parsed.name && parsed.role) {
+        return parsed as User;
+      }
+      localStorage.removeItem('dashboard_user');
+      return null;
+    } catch {
+      localStorage.removeItem('dashboard_user');
+      return null;
+    }
   });
 
   const login = async (email: string, password: string): Promise<boolean> => {
