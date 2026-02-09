@@ -36,10 +36,10 @@ const XHSIcon = ({ className }: { className?: string }) => (
 );
 
 const statusConfig = {
-  new: { label: 'New', color: 'bg-blue-100 text-blue-700', icon: AlertCircle },
-  in_review: { label: 'In Review', color: 'bg-yellow-100 text-yellow-700', icon: Clock },
-  approved: { label: 'Approved', color: 'bg-green-100 text-green-700', icon: CheckCircle },
-  completed: { label: 'Completed', color: 'bg-gray-100 text-gray-700', icon: CheckCircle },
+  new: { label: 'New', color: 'bg-blue-50 text-blue-600', icon: AlertCircle },
+  in_review: { label: 'In Review', color: 'bg-amber-50 text-amber-600', icon: Clock },
+  approved: { label: 'Approved', color: 'bg-emerald-50 text-emerald-600', icon: CheckCircle },
+  completed: { label: 'Completed', color: 'bg-gray-50 text-gray-600', icon: CheckCircle },
 };
 
 const typographyLabels: Record<string, string> = {
@@ -86,10 +86,10 @@ export default function SubmissionDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-muted flex items-center justify-center">
+      <div className="min-h-screen bg-subtle flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-primary mx-auto mb-3 animate-spin" />
-          <p className="text-muted-foreground">Loading submission...</p>
+          <Loader2 className="w-8 h-8 text-gray-300 mx-auto mb-3 animate-spin" />
+          <p className="text-sm text-muted-foreground">Loading submission...</p>
         </div>
       </div>
     );
@@ -97,10 +97,10 @@ export default function SubmissionDetail() {
 
   if (error || !submission) {
     return (
-      <div className="min-h-screen bg-muted flex items-center justify-center">
+      <div className="min-h-screen bg-subtle flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl font-bold text-foreground mb-2">Submission Not Found</h2>
-          <p className="text-muted-foreground mb-4">{error || "The submission you're looking for doesn't exist."}</p>
+          <h2 className="text-lg font-semibold text-foreground mb-2">Submission Not Found</h2>
+          <p className="text-sm text-muted-foreground mb-4">{error || "The submission you're looking for doesn't exist."}</p>
           <Link to="/dashboard" className="btn-primary inline-flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             Back to Dashboard
@@ -125,28 +125,28 @@ export default function SubmissionDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-muted">
+    <div className="min-h-screen bg-subtle">
       {/* Header */}
-      <header className="bg-white border-b border-border sticky top-0 z-10">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-border-subtle sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between h-14">
+            <div className="flex items-center gap-3">
               <img
                 src="/social-onboarding-dashboard/snappy-logo.png"
                 alt="Snappy Logo"
-                className="w-10 h-10 rounded-xl"
+                className="w-8 h-8 rounded-lg"
               />
               <button
                 onClick={() => navigate('/dashboard')}
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                <ArrowLeft className="w-5 h-5" />
-                <span>Back to Dashboard</span>
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back</span>
               </button>
             </div>
 
-            <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 ${status.color}`}>
-              <StatusIcon className="w-4 h-4" />
+            <span className={`px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${status.color}`}>
+              <StatusIcon className="w-3.5 h-3.5" />
               {status.label}
             </span>
           </div>
@@ -157,17 +157,17 @@ export default function SubmissionDetail() {
         {/* Business Header */}
         <div className="card mb-6">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Building2 className="w-8 h-8 text-white" />
+            <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Building2 className="w-6 h-6 text-gray-400" />
             </div>
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-foreground">{submission.businessName}</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-xl font-semibold text-foreground">{submission.businessName}</h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
                 {submission.businessType === 'restaurant'
                   ? `${submission.cuisine || 'Restaurant'}`
                   : submission.otherBusinessType || 'Business'}
               </p>
-              <p className="text-sm text-muted-foreground mt-2">
+              <p className="text-xs text-muted-foreground mt-2">
                 Submitted on {formatDate(submission.submittedAt)}
               </p>
             </div>
@@ -216,7 +216,7 @@ export default function SubmissionDetail() {
               {submission.hasExistingSocial && submission.existingSocialAccounts && (
                 <div className="mt-3 space-y-2">
                   {submission.existingSocialAccounts.map((account, idx) => (
-                    <div key={idx} className="p-3 bg-muted rounded-lg flex items-center gap-3">
+                    <div key={idx} className="p-3 bg-subtle rounded-lg flex items-center gap-3">
                       {account.platform === 'instagram' && <Instagram className="w-5 h-5 text-pink-500" />}
                       {account.platform === 'facebook' && <Facebook className="w-5 h-5 text-blue-600" />}
                       {account.platform === 'tiktok' && <TikTokIcon className="w-5 h-5" />}
@@ -259,15 +259,15 @@ export default function SubmissionDetail() {
                 {submission.keyOfferings.map((offering, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm"
+                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
                   >
                     {offering}
                   </span>
                 ))}
               </div>
               {submission.customOffering && (
-                <div className="mt-3 p-3 bg-muted rounded-lg">
-                  <p className="text-sm text-muted-foreground">Custom offering:</p>
+                <div className="mt-3 p-3 bg-subtle rounded-lg">
+                  <p className="text-xs text-muted-foreground">Custom offering:</p>
                   <p className="text-sm font-medium">{submission.customOffering}</p>
                 </div>
               )}
@@ -279,15 +279,15 @@ export default function SubmissionDetail() {
                 {submission.uniqueSellingPoints.map((usp, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
                   >
                     {usp}
                   </span>
                 ))}
               </div>
               {submission.customUSP && (
-                <div className="mt-3 p-3 bg-muted rounded-lg">
-                  <p className="text-sm text-muted-foreground">Custom USP:</p>
+                <div className="mt-3 p-3 bg-subtle rounded-lg">
+                  <p className="text-xs text-muted-foreground">Custom USP:</p>
                   <p className="text-sm font-medium">{submission.customUSP}</p>
                 </div>
               )}
@@ -308,20 +308,20 @@ export default function SubmissionDetail() {
               />
               {submission.customColors && (
                 <div className="mt-3">
-                  <p className="text-sm text-muted-foreground mb-2">Custom Colors:</p>
+                  <p className="text-xs text-muted-foreground mb-2">Custom Colors:</p>
                   <div className="flex gap-2">
                     <div
-                      className="w-10 h-10 rounded-lg border"
+                      className="w-10 h-10 rounded-lg border border-border-subtle"
                       style={{ backgroundColor: submission.customColors.primary }}
                       title={`Primary: ${submission.customColors.primary}`}
                     />
                     <div
-                      className="w-10 h-10 rounded-lg border"
+                      className="w-10 h-10 rounded-lg border border-border-subtle"
                       style={{ backgroundColor: submission.customColors.secondary }}
                       title={`Secondary: ${submission.customColors.secondary}`}
                     />
                     <div
-                      className="w-10 h-10 rounded-lg border"
+                      className="w-10 h-10 rounded-lg border border-border-subtle"
                       style={{ backgroundColor: submission.customColors.accent }}
                       title={`Accent: ${submission.customColors.accent}`}
                     />
@@ -330,7 +330,7 @@ export default function SubmissionDetail() {
               )}
               {submission.inspirationLinks && submission.inspirationLinks.length > 0 && (
                 <div className="mt-3">
-                  <p className="text-sm text-muted-foreground mb-2">Inspiration Links:</p>
+                  <p className="text-xs text-muted-foreground mb-2">Inspiration Links:</p>
                   {submission.inspirationLinks.map((link, idx) => (
                     <a
                       key={idx}
@@ -353,15 +353,15 @@ export default function SubmissionDetail() {
                 {submission.targetAudience.map((audience, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 bg-muted text-foreground rounded-full text-sm"
+                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
                   >
                     {audience}
                   </span>
                 ))}
               </div>
               {submission.customAudience && (
-                <div className="mt-3 p-3 bg-muted rounded-lg">
-                  <p className="text-sm text-muted-foreground">Custom audience:</p>
+                <div className="mt-3 p-3 bg-subtle rounded-lg">
+                  <p className="text-xs text-muted-foreground">Custom audience:</p>
                   <p className="text-sm font-medium">{submission.customAudience}</p>
                 </div>
               )}
@@ -374,7 +374,7 @@ export default function SubmissionDetail() {
 
             {/* Business Story */}
             <Section title="Business Story" icon={BookOpen}>
-              <p className="text-muted-foreground leading-relaxed">{submission.businessStory}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{submission.businessStory}</p>
             </Section>
 
             {/* Access Preferences */}
@@ -398,8 +398,8 @@ export default function SubmissionDetail() {
                   {submission.localCompetitors
                     .filter(c => c)
                     .map((competitor, idx) => (
-                      <li key={idx} className="text-muted-foreground">
-                        • {competitor}
+                      <li key={idx} className="text-sm text-muted-foreground">
+                        {competitor}
                       </li>
                     ))}
                 </ul>
@@ -413,7 +413,7 @@ export default function SubmissionDetail() {
           <div className="flex flex-wrap gap-3">
             <button className="btn-primary">Mark as In Review</button>
             <button className="btn-secondary">Approve</button>
-            <button className="px-6 py-3 border-2 border-border rounded-xl font-semibold text-foreground hover:bg-muted transition-all">
+            <button className="btn-secondary">
               Export Details
             </button>
           </div>
@@ -435,8 +435,8 @@ function Section({
   return (
     <div className="card">
       <div className="flex items-center gap-2 mb-4">
-        <Icon className="w-5 h-5 text-primary" />
-        <h2 className="font-bold text-foreground">{title}</h2>
+        <Icon className="w-4 h-4 text-gray-400" />
+        <h2 className="text-sm font-semibold text-foreground">{title}</h2>
       </div>
       {children}
     </div>
@@ -445,7 +445,7 @@ function Section({
 
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="flex justify-between py-2 border-b border-border last:border-0">
+    <div className="flex justify-between py-2 border-b border-border-subtle last:border-0">
       <span className="text-muted-foreground text-sm">{label}</span>
       <span className="text-foreground text-sm font-medium text-right">{value}</span>
     </div>

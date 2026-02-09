@@ -10,20 +10,25 @@ import {
   CheckCircle,
   AlertCircle,
   Search,
-  Filter,
-  Eye,
-  Building2,
   Calendar,
   ChevronRight,
   Loader2,
 } from 'lucide-react';
 
 const statusConfig = {
-  new: { label: 'New', color: 'bg-blue-100 text-blue-700', icon: AlertCircle },
-  in_review: { label: 'In Review', color: 'bg-yellow-100 text-yellow-700', icon: Clock },
-  approved: { label: 'Approved', color: 'bg-green-100 text-green-700', icon: CheckCircle },
-  completed: { label: 'Completed', color: 'bg-gray-100 text-gray-700', icon: CheckCircle },
+  new: { label: 'New', color: 'bg-blue-50 text-blue-600', dot: 'bg-blue-500' },
+  in_review: { label: 'In Review', color: 'bg-amber-50 text-amber-600', dot: 'bg-amber-500' },
+  approved: { label: 'Approved', color: 'bg-emerald-50 text-emerald-600', dot: 'bg-emerald-500' },
+  completed: { label: 'Completed', color: 'bg-gray-50 text-gray-600', dot: 'bg-gray-400' },
 };
+
+const filterTabs = [
+  { value: 'all', label: 'All' },
+  { value: 'new', label: 'New' },
+  { value: 'in_review', label: 'In Review' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'completed', label: 'Completed' },
+];
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -76,35 +81,33 @@ export default function Dashboard() {
     });
   };
 
+  const userInitial = user?.name?.charAt(0)?.toUpperCase() || 'U';
+
   return (
-    <div className="min-h-screen bg-muted">
+    <div className="min-h-screen bg-subtle">
       {/* Header */}
-      <header className="bg-white border-b border-border sticky top-0 z-10">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-border-subtle sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between h-14">
+            <div className="flex items-center gap-2.5">
               <img
                 src="/social-onboarding-dashboard/snappy-logo.png"
                 alt="Snappy Logo"
-                className="w-10 h-10 rounded-xl"
+                className="w-8 h-8 rounded-lg"
               />
-              <div>
-                <h1 className="text-lg font-bold text-foreground">Snappy Dashboard</h1>
-                <p className="text-xs text-muted-foreground">Manage submissions</p>
-              </div>
+              <h1 className="text-sm font-semibold text-foreground">Snappy Dashboard</h1>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="text-right hidden sm:block">
-                <p className="text-sm font-medium text-foreground">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">{user?.email}</p>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-medium">
+                {userInitial}
               </div>
               <button
                 onClick={logout}
-                className="p-2 text-muted-foreground hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
+                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg transition-colors"
                 title="Logout"
               >
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -112,111 +115,69 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Page Title */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-foreground tracking-tight">Submissions</h2>
+          <p className="text-sm text-muted-foreground mt-1">Review and manage onboarding submissions</p>
+        </div>
+
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="card">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">{stats.total}</p>
-                <p className="text-sm text-muted-foreground">Total</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="card">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                <AlertCircle className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">{stats.new}</p>
-                <p className="text-sm text-muted-foreground">New</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="card">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-                <Clock className="w-6 h-6 text-yellow-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">{stats.inReview}</p>
-                <p className="text-sm text-muted-foreground">In Review</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="card">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">{stats.completed}</p>
-                <p className="text-sm text-muted-foreground">Completed</p>
-              </div>
-            </div>
-          </div>
+          <StatCard label="Total" value={stats.total} dot="bg-gray-400" icon={Users} />
+          <StatCard label="New" value={stats.new} dot="bg-blue-500" icon={AlertCircle} />
+          <StatCard label="In Review" value={stats.inReview} dot="bg-amber-500" icon={Clock} />
+          <StatCard label="Completed" value={stats.completed} dot="bg-emerald-500" icon={CheckCircle} />
         </div>
 
         {/* Filters */}
-        <div className="card mb-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by business name..."
-                className="input pl-12"
-              />
-            </div>
-
-            <div className="relative">
-              <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="input pl-12 pr-8 appearance-none cursor-pointer min-w-[180px]"
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div className="flex gap-1 bg-gray-100 rounded-lg p-1 overflow-x-auto">
+            {filterTabs.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => setStatusFilter(tab.value)}
+                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all whitespace-nowrap ${
+                  statusFilter === tab.value
+                    ? 'bg-white text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
-                <option value="all">All Statuses</option>
-                <option value="new">New</option>
-                <option value="in_review">In Review</option>
-                <option value="approved">Approved</option>
-                <option value="completed">Completed</option>
-              </select>
-            </div>
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search businesses..."
+              className="input pl-9"
+            />
           </div>
         </div>
 
         {/* Submissions List */}
-        <div className="card">
-          <h2 className="text-lg font-bold text-foreground mb-4">
-            Submissions ({filteredSubmissions.length})
-          </h2>
-
+        <div className="card p-0">
           {loading ? (
-            <div className="text-center py-12">
-              <Loader2 className="w-12 h-12 text-primary mx-auto mb-3 animate-spin" />
-              <p className="text-muted-foreground">Loading submissions...</p>
+            <div className="text-center py-16">
+              <Loader2 className="w-8 h-8 text-gray-300 mx-auto mb-3 animate-spin" />
+              <p className="text-sm text-muted-foreground">Loading submissions...</p>
             </div>
           ) : error ? (
-            <div className="text-center py-12">
-              <AlertCircle className="w-12 h-12 text-danger mx-auto mb-3" />
-              <p className="text-danger">{error}</p>
+            <div className="text-center py-16">
+              <AlertCircle className="w-8 h-8 text-danger mx-auto mb-3" />
+              <p className="text-sm text-danger">{error}</p>
             </div>
           ) : filteredSubmissions.length === 0 ? (
-            <div className="text-center py-12">
-              <Users className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">No submissions found</p>
+            <div className="text-center py-16">
+              <Users className="w-8 h-8 text-gray-300 mx-auto mb-3" />
+              <p className="text-sm text-muted-foreground">No submissions found</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="divide-y divide-gray-50">
               {filteredSubmissions.map((submission) => (
                 <SubmissionRow key={submission.id} submission={submission} formatDate={formatDate} />
               ))}
@@ -224,6 +185,31 @@ export default function Dashboard() {
           )}
         </div>
       </main>
+    </div>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  dot,
+  icon: Icon,
+}: {
+  label: string;
+  value: number;
+  dot: string;
+  icon: React.ComponentType<{ className?: string }>;
+}) {
+  return (
+    <div className="card">
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className={`w-1.5 h-1.5 rounded-full ${dot}`} />
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</span>
+        </div>
+        <Icon className="w-4 h-4 text-gray-300" />
+      </div>
+      <p className="text-3xl font-semibold text-foreground">{value}</p>
     </div>
   );
 }
@@ -236,47 +222,48 @@ function SubmissionRow({
   formatDate: (date: string) => string;
 }) {
   const status = statusConfig[submission.status];
-  const StatusIcon = status.icon;
+  const initials = submission.businessName
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <Link
       to={`/submission/${submission.id}`}
-      className="block p-4 bg-muted/50 hover:bg-muted rounded-xl transition-colors group"
+      className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors group"
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0">
-            <Building2 className="w-6 h-6 text-primary" />
-          </div>
+      <div className="flex items-center gap-4 min-w-0">
+        <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0 text-xs font-medium text-gray-500">
+          {initials}
+        </div>
 
-          <div>
-            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2.5">
+            <h3 className="font-medium text-foreground text-sm truncate">
               {submission.businessName}
             </h3>
-            <div className="flex items-center gap-3 mt-1">
-              <span className="text-sm text-muted-foreground capitalize">
-                {submission.businessType === 'restaurant'
-                  ? `${submission.cuisine || 'Restaurant'}`
-                  : submission.otherBusinessType || 'Business'}
-              </span>
-              <span className="text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground flex items-center gap-1">
-                <Calendar className="w-3 h-3" />
-                {formatDate(submission.submittedAt)}
-              </span>
-            </div>
+            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
+              {status.label}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span className="text-xs text-muted-foreground capitalize">
+              {submission.businessType === 'restaurant'
+                ? `${submission.cuisine || 'Restaurant'}`
+                : submission.otherBusinessType || 'Business'}
+            </span>
+            <span className="text-gray-300">·</span>
+            <span className="text-xs text-muted-foreground flex items-center gap-1">
+              <Calendar className="w-3 h-3" />
+              {formatDate(submission.submittedAt)}
+            </span>
           </div>
         </div>
-
-        <div className="flex items-center gap-3">
-          <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${status.color}`}>
-            <StatusIcon className="w-3 h-3" />
-            {status.label}
-          </span>
-          <Eye className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-        </div>
       </div>
+
+      <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors flex-shrink-0" />
     </Link>
   );
 }

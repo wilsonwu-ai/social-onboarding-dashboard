@@ -19,13 +19,18 @@ export default {
           dark: '#dba8cc',
           light: '#f5e4ef',
         },
+        accent: {
+          light: '#FDF2F8',
+        },
         background: '#FFFFFF',
         foreground: '#1A1A1A',
+        subtle: '#F9FAFB',
         muted: {
           DEFAULT: '#F5F5F5',
           foreground: '#6B7280',
         },
         border: '#E5E7EB',
+        'border-subtle': '#F3F4F6',
         input: '#E5E7EB',
         ring: '#B02990',
         success: {
@@ -42,6 +47,7 @@ export default {
         },
       },
       fontFamily: {
+        sans: ['Inter', 'Poppins', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
       },
       borderRadius: {
@@ -53,8 +59,8 @@ export default {
         '3xl': '2rem',
       },
       boxShadow: {
-        'soft': '0 4px 20px rgba(176, 41, 144, 0.1)',
-        'hover': '0 8px 30px rgba(176, 41, 144, 0.2)',
+        'soft': '0 1px 3px rgba(0, 0, 0, 0.04)',
+        'hover': '0 4px 12px rgba(0, 0, 0, 0.06)',
       },
     },
   },

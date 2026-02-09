@@ -8,12 +8,12 @@
   }
 
   body {
-    @apply bg-background text-foreground font-poppins;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-poppins font-bold;
+    @apply font-sans font-semibold tracking-tight;
   }
 }
 
@@ -23,22 +23,22 @@
   }
 
   .btn-primary {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold
-           hover:bg-primary-dark transition-all duration-300 shadow-soft hover:shadow-hover;
+    @apply bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-medium
+           hover:bg-primary-dark transition-colors duration-200;
   }
 
   .btn-secondary {
-    @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-semibold
-           hover:bg-secondary-dark transition-all duration-300;
+    @apply bg-transparent text-foreground px-5 py-2.5 rounded-lg font-medium border border-gray-200
+           hover:bg-gray-50 transition-colors duration-200;
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-soft p-6 border border-border;
+    @apply bg-white rounded-xl p-6 border border-border-subtle;
   }
 
   .input {
-    @apply w-full px-4 py-3 border-2 border-input rounded-xl focus:border-primary
-           focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all;
+    @apply w-full px-3.5 py-2.5 border border-gray-200 rounded-lg focus:border-gray-400
+           focus:outline-none focus:ring-1 focus:ring-gray-200 transition-colors text-sm;
   }
 }
 
