@@ -9,15 +9,19 @@ const SubmissionDetail = lazy(() => import('./pages/SubmissionDetail'));
 
 class ErrorBoundary extends Component<
   { children: ReactNode },
-  { hasError: boolean }
+  { hasError: boolean; error: Error | null }
 > {
   constructor(props: { children: ReactNode }) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('App crash:', error, info.componentStack);
   }
 
   render() {
@@ -31,13 +35,28 @@ class ErrorBoundary extends Component<
           fontFamily: 'Poppins, sans-serif',
           padding: '1rem',
         }}>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center', maxWidth: '400px' }}>
             <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
               Something went wrong
             </h1>
-            <p style={{ color: '#6B7280', marginBottom: '1rem' }}>
+            <p style={{ color: '#6B7280', marginBottom: '0.5rem' }}>
               Please try refreshing the page.
             </p>
+            {this.state.error && (
+              <pre style={{
+                color: '#EF4444',
+                fontSize: '0.75rem',
+                background: '#FEF2F2',
+                padding: '0.75rem',
+                borderRadius: '0.5rem',
+                marginBottom: '1rem',
+                textAlign: 'left',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+              }}>
+                {this.state.error.message}
+              </pre>
+            )}
             <button
               onClick={() => {
                 localStorage.removeItem('dashboard_user');
