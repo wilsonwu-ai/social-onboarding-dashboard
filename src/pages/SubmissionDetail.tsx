@@ -35,12 +35,14 @@ const XHSIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const statusConfig = {
+const statusConfig: Record<string, { label: string; color: string; icon: React.ComponentType<{ className?: string }> }> = {
   new: { label: 'New', color: 'bg-blue-50 text-blue-600', icon: AlertCircle },
   in_review: { label: 'In Review', color: 'bg-amber-50 text-amber-600', icon: Clock },
   approved: { label: 'Approved', color: 'bg-emerald-50 text-emerald-600', icon: CheckCircle },
   completed: { label: 'Completed', color: 'bg-gray-50 text-gray-600', icon: CheckCircle },
 };
+
+const defaultStatus = { label: 'Unknown', color: 'bg-gray-50 text-gray-500', icon: AlertCircle };
 
 const typographyLabels: Record<string, string> = {
   modern: 'Modern & Clean (Poppins)',
@@ -110,7 +112,7 @@ export default function SubmissionDetail() {
     );
   }
 
-  const status = statusConfig[submission.status];
+  const status = statusConfig[submission.status] || defaultStatus;
   const StatusIcon = status.icon;
 
   const formatDate = (dateString: string) => {

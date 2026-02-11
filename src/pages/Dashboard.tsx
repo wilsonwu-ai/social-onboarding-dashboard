@@ -15,12 +15,14 @@ import {
   Loader2,
 } from 'lucide-react';
 
-const statusConfig = {
+const statusConfig: Record<string, { label: string; color: string; dot: string }> = {
   new: { label: 'New', color: 'bg-blue-50 text-blue-600', dot: 'bg-blue-500' },
   in_review: { label: 'In Review', color: 'bg-amber-50 text-amber-600', dot: 'bg-amber-500' },
   approved: { label: 'Approved', color: 'bg-emerald-50 text-emerald-600', dot: 'bg-emerald-500' },
   completed: { label: 'Completed', color: 'bg-gray-50 text-gray-600', dot: 'bg-gray-400' },
 };
+
+const defaultStatus = { label: 'Unknown', color: 'bg-gray-50 text-gray-500', dot: 'bg-gray-400' };
 
 const filterTabs = [
   { value: 'all', label: 'All' },
@@ -221,7 +223,7 @@ function SubmissionRow({
   submission: Submission;
   formatDate: (date: string) => string;
 }) {
-  const status = statusConfig[submission.status];
+  const status = statusConfig[submission.status] || defaultStatus;
   const initials = submission.businessName
     .split(' ')
     .map((w) => w[0])
