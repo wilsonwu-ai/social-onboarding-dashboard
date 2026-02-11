@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Mail, AlertCircle, Eye, EyeOff, Lock } from 'lucide-react';
 
@@ -10,7 +9,6 @@ export default function Login() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,15 +17,15 @@ export default function Login() {
 
     try {
       const success = await login(email, password);
-      if (success) {
-        navigate('/dashboard');
-      } else {
+      if (!success) {
         setError('Invalid email or password');
+        setIsLoading(false);
       }
+      // On success, keep loading state - PublicRoute will redirect to dashboard
+      // when isAuthenticated becomes true
     } catch (err) {
       console.error('Login error:', err);
       setError('An error occurred. Please try again.');
-    } finally {
       setIsLoading(false);
     }
   };
