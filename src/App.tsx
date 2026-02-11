@@ -42,21 +42,6 @@ class ErrorBoundary extends Component<
             <p style={{ color: '#6B7280', marginBottom: '0.5rem' }}>
               Please try refreshing the page.
             </p>
-            {this.state.error && (
-              <pre style={{
-                color: '#EF4444',
-                fontSize: '0.75rem',
-                background: '#FEF2F2',
-                padding: '0.75rem',
-                borderRadius: '0.5rem',
-                marginBottom: '1rem',
-                textAlign: 'left',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word',
-              }}>
-                {this.state.error.message}
-              </pre>
-            )}
             <button
               onClick={() => {
                 localStorage.removeItem('dashboard_user');
@@ -131,7 +116,9 @@ function AppRoutes() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <ErrorBoundary>
+                <Dashboard />
+              </ErrorBoundary>
             </ProtectedRoute>
           }
         />
@@ -139,7 +126,9 @@ function AppRoutes() {
           path="/submission/:id"
           element={
             <ProtectedRoute>
-              <SubmissionDetail />
+              <ErrorBoundary>
+                <SubmissionDetail />
+              </ErrorBoundary>
             </ProtectedRoute>
           }
         />
